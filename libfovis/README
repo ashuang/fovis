@@ -1,0 +1,25 @@
+This software is constructed according to the Pods software policies and
+templates.  The policies and templates can be found at:
+
+  http://sourceforge.net/projects/pods
+
+====
+
+Name:         libfovis
+Authors:      Albert Huang <albert@csail.mit.edu>
+              Abraham Bachrach <abachrach@gmail.com>
+              Daniel Maturana <dimatura@gmail.com>
+
+Summary:      Visual odometry with a depth camera (e.g., Kinect/Primesense) or
+              stereo camera.
+Description:  
+  TODO
+
+Requirements: 
+
+  Eigen 3 - http://eigen.tuxfamily.org
+
+License
+=======
+
+  TODO
