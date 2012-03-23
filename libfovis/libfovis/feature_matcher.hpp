@@ -6,6 +6,9 @@
 namespace fovis
 {
 
+/**
+ * \brief Matches features between a reference and a target image.
+ */
 class FeatureMatcher {
 public:
   FeatureMatcher ();
@@ -19,6 +22,20 @@ public:
                      std::vector<FeatureMatch>* matches);
 #endif
 
+  /**
+   * Feature matching using sum of absolute differences (SAD).
+   *
+   * \param ref_level features in the reference image.
+   * \param target_level features in the target image.
+   * \param candidates identifies potential match candidates for each feature
+   * in the reference image.  For every reference feature, there is a vector of
+   * target feature indices that is a potential match.
+   * \param matches output array of matches.  This should be pre-allocated and
+   * of size at least min(num features in \p ref_level, num features in \p
+   * target_level)
+   * \param num_matches output parameter, is set to the number of features
+   * matched.
+   */
   void matchFeatures(PyramidLevel* ref_level,
                      PyramidLevel* target_level,
                      const std::vector<std::vector<int> >& candidates,

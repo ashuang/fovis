@@ -272,7 +272,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = ../libfovis
+INPUT                  = ../libfovis content
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -289,22 +289,7 @@ INPUT_ENCODING         = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS          = camera_intrinsics.hpp \
-                         depth_image.hpp \
-                         depth_source.hpp \
-                         feature_match.hpp \
-                         fovis.hpp \
-                         frame.hpp \
-                         keypoint.hpp \
-                         motion_estimation.hpp \
-                         options.hpp \
-                         primesense_depth.hpp \
-                         pyramid_level.hpp \
-                         rectification.hpp \
-                         stereo_frame.hpp \
-                         stereo_depth.hpp \
-                         tictoc.hpp \
-                         visual_odometry.hpp
+FILE_PATTERNS          = *.hpp *.dox
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.

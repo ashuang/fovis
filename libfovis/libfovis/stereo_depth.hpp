@@ -18,23 +18,32 @@ namespace fovis
 /**
  * \ingroup DepthSources
  * \brief Calibration data structure for stereo cameras.
- *
- * TODO
  */
 struct StereoCalibrationParameters
 {
-  double right_to_left_translation[3]; // Translation vector: [ x, y, z ]
-  double right_to_left_rotation[4];  // Rotation quaternion: [ w, x, y, z ]
+  /**
+   * Translation vector: [ x, y, z ]
+   */
+  double right_to_left_translation[3];
+  /**
+   * Rotation quaternion: [ w, x, y, z ]
+   */
+  double right_to_left_rotation[4];
 
+  /**
+   * Intrinsics of the left camera.
+   */
   CameraIntrinsicsParameters left_parameters;
+
+  /**
+   * Intrinsics of the right camera.
+   */
   CameraIntrinsicsParameters right_parameters;
 };
 
 /**
  * \ingroup DepthSources
  * \brief Computes useful information from a StereoCalibrationParameters object
- *
- * TODO
  */
 class StereoCalibration
 {
@@ -61,10 +70,16 @@ class StereoCalibration
       return result;
     }
 
+    /**
+     * \return the width of the rectified camera.
+     */
     int getWidth() const {
       return _rectified_parameters.width;
     }
 
+    /**
+     * \return the height of the rectified camera.
+     */
     int getHeight() const {
       return _rectified_parameters.height;
     }
@@ -85,6 +100,9 @@ class StereoCalibration
       return _rectified_parameters;
     }
 
+    /**
+     * \return a newly allocated copy of this calibration object.
+     */
     StereoCalibration* makeCopy() const;
 
   private:

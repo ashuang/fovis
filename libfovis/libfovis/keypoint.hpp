@@ -8,14 +8,34 @@
 namespace fovis
 {
 
-    
+/**
+ * \brief An interesting point in an image.
+ */
 class KeyPoint
 {
   public:
+    /**
+     * also known as the X coordinate.
+     */
     float u;
+    /**
+     * also known as the Y coordinate.
+     */
     float v;
+    /**
+     * Scalar value used to indicate how strong the keypoint is (roughly an
+     * indicator of how likely it will be tracked across images).
+     */
     float score;
+
+    /**
+     * Initializes a keypoint to (0, 0) with score 0.
+     */
     KeyPoint() : u(0), v(0), score(0) {}
+
+    /**
+     * Initializes a keypoint to the specified coordinate and score.
+     */
     KeyPoint(float u_, float v_, float score_) : u(u_), v(v_), score(score_) {}
 };
 
@@ -23,7 +43,8 @@ class KeyPoint
  * \ingroup FovisCore
  * \brief Image feature used for motion estimation
  *
- * TODO
+ * Corresponds to a KeyPoint object as well as additional information used and
+ * stored during the visual odometry estimation process.
  */
 class KeypointData
 {
@@ -81,6 +102,9 @@ class KeypointData
      */
     uint8_t pyramid_level;
 
+    /**
+     * Not used.
+     */
     int keypoint_index;
 
     /**
@@ -88,6 +112,9 @@ class KeypointData
      */
     int track_id;
 
+    /**
+     * Default constructor.
+     */
     KeypointData() :
       kp(0, 0, 0),
       xyzw(0, 0, 0, 1),
@@ -101,6 +128,9 @@ class KeypointData
       track_id(0)
     {}
 
+    /**
+     * populates this keypoint to be identical to the \p src keypoint.
+     */
     void copyFrom(const KeypointData& src) {
       kp.u = src.kp.u;
       kp.v = src.kp.v;

@@ -1,0 +1,29 @@
+/**
+
+\mainpage fovis library API documentation
+
+\section introduction Introduction
+
+fovis is a visual odometry library that estimates the 3D motion of a camera
+using a source of depth information for each pixel.  Both stereo camera data
+and RGB-D camera data (e.g., Microsoft Kinect, PrimeSense) are supported.
+
+The primary class in fovis is the \ref fovis::VisualOdometry class.
+
+\subsection requirements Requirements
+
+fovis is intended to be relatively portable.  There are two major requirements:
+\li <a href="http://eigen.tuxfamily.org">Eigen 3</a>
+\li A CPU supporting Intel SSE2.
+
+
+\subsection references References
+
+The algorithms in this library were first presented in the following paper:
+
+<b>Visual Odometry and Mapping for Autonomous Flight Using an RGB-D Camera.</b><br/>
+<i>Albert S. Huang, Abraham Bachrach, Peter Henry, Michael Krainin, Daniel Maturana, Dieter Fox, and Nicholas Roy</i><br/>
+Int. Symposium on Robotics Research (ISRR), Flagstaff, Arizona, USA, Aug. 2011
+<a href="http://people.csail.mit.edu/albert/pubs/2011-huang-isrr.pdf">[PDF]</a>.
+
+**/

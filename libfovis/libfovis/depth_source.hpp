@@ -11,9 +11,20 @@ class FeatureMatch;
 
 /**
  * \ingroup FovisCore
- * \brief Abstract class representing sources of depth information.
+ * \brief Provides depth estimates for input image pixels.
  *
- * TODO
+ * A reliable source of depth estimates at as many pixels in an image as
+ * possible is crucial to producing useful visual odometry estimates.  The
+ * DepthSource class abstracts out the process of determining depth at each
+ * pixel.
+ *
+ * DepthSource is used in a lazy fashion.  First, keypoints in the input image
+ * are identified.  Next, keypoints without depth information are filtered out
+ * (pixels where haveXyz() returns false) and discarded.  Later, the actual depth
+ * of the remaining keypoints is retrieved using getXyz().  Finally, after
+ * features are temporally matched across frames and their keypoint positions
+ * refined, DepthSource is used again to refine the depth estimates of the
+ * refined keypoint image positions.
  */
 class DepthSource
 {

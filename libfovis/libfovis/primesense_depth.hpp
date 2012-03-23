@@ -48,16 +48,40 @@ namespace fovis
  */
 struct PrimeSenseCalibrationParameters
 {
-  int width;   // image width
-  int height;  // image height
+  /**
+   * image width
+   */
+  int width;
+  /**
+   * image height
+   */
+  int height;
 
-  double shift_offset;                // fixed disparity offset
-  double projector_depth_baseline;    // distance from projector to depth camera (m)
+  /**
+   * fixed disparity offset.
+   */
+  double shift_offset;
+  /**
+   * distance from projector to depth camera (m)
+   */
+  double projector_depth_baseline;
 
-  double depth_to_rgb_translation[3];  // Translation vector: [ x, y, z ]
-  double depth_to_rgb_quaternion[4];   // Rotation quaternion: [ w, x, y, z ]
+  /**
+   * Translation vector: [ x, y, z ]
+   */
+  double depth_to_rgb_translation[3];
+  /**
+   * Rotation quaternion: [ w, x, y, z ]
+   */
+  double depth_to_rgb_quaternion[4];
 
+  /**
+   * intrinsics of the IR camera.
+   */
   CameraIntrinsicsParameters depth_params;
+  /**
+   * intrinsics of the RGB camera.
+   */
   CameraIntrinsicsParameters rgb_params;
 };
 
@@ -69,6 +93,10 @@ struct PrimeSenseCalibrationParameters
 class PrimeSenseCalibration
 {
   public:
+    /**
+     * Constructs a PrimeSenseCalibration object using the specified
+     * parameters.
+     */
     PrimeSenseCalibration(const PrimeSenseCalibrationParameters& params);
     ~PrimeSenseCalibration();
 
@@ -135,10 +163,16 @@ class PrimeSenseCalibration
       return getDepthXyzToRgbXyz().matrix() * getDepthUvdToDepthXyz();
     }
 
+    /**
+     * \return the calibration parameters used to initialize this object.
+     */
     const PrimeSenseCalibrationParameters& getParameters() const {
       return params;
     }
 
+    /**
+     * return the rectification object calculated from the calibration parameters.
+     */
     const Rectification* getRgbRectification() const {
       return rgb_rectification;
     }

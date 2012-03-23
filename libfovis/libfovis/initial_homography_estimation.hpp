@@ -8,24 +8,31 @@
 namespace fovis
 {
 
+/**
+ * \brief Estimates a rough 2D homography registering two images.
+ */
 class InitialHomographyEstimator {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
   /**
    * Set the template image to the passed in arguments.
    * assumes the image data is row-major.
-   * The image will be downsampled by 1/2^downsampleFactor
+   * The image will be downsampled by \f$ 1/2^{downsampleFactor} \f$
    */
   void setTemplateImage(const uint8_t * grayData, int width, int height, int stride, int downsampleFactor);
+
   /**
-   * Set the test image accordingly. The opimization will warp this image to match the template
-   * assumes the image data is row-major.
-   * The image will be downsampled by 1/2^downsampleFactor
+   * Set the test image accordingly. The opimization will warp this image to
+   * match the template assumes the image data is row-major.
+   * The image will be downsampled by \f$ 1/2^{downsampleFactor} \f$
    */
   void setTestImage(const uint8_t * grayData, int width, int height, int stride, int downsampleFactor);
-  /*
-   * Run ESM to find the homography between the template and test images. These should have already been passed in
-   * using the methods setTemplateImage, and setTestImage
+
+  /**
+   * Run ESM to find the homography between the template and test images. These
+   * should have already been passed in using the methods setTemplateImage(), and
+   * setTestImage().
    */
   Eigen::Matrix3f track(const Eigen::Matrix3f &init_H, int nIters, double *finalRMS);
 
