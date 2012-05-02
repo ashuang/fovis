@@ -22,5 +22,6 @@ Configuration (fovis):
 
        libfovis:        Enabled
  OpenNI example:        ${OPENNI_EXAMPLE_MESSAGE}
+ libfreenct example:    ${LIBFREENECT_EXAMPLE_MESSAGE}
 
 ")

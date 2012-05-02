@@ -1,0 +1,7 @@
+This example obtains depth images using libfreenect.  It's designed to work
+with a Microsoft Kinect.
+
+You must have libfreenect installed.  It is strongly recommended that you
+install libfreenect from source to get the latest version possible:
+
+http://openkinect.org/wiki/Getting_Started
