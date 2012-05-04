@@ -5,7 +5,7 @@
 \section introduction Introduction
 
 Fovis is a visual odometry library that estimates the 3D motion of a camera
-using a source of depth information for each pixel.  It's original
+using a source of depth information for each pixel.  Its original
 implementation is described in the following paper:
 
 \li Visual Odometry and Mapping for Autonomous Flight Using an RGB-D Camera.  <i>Albert S. Huang, Abraham Bachrach, Peter Henry, Michael Krainin, Daniel Maturana, Dieter Fox, and Nicholas Roy</i>
