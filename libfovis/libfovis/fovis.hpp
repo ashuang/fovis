@@ -17,4 +17,20 @@
  * \brief Classes for specific depth sources (e.g., stereo, Kinect)
  */
 
+/**
+ * Fovis major version number.  Use this to check which version of fovis you
+ * have.
+ */
+#define FOVIS_MAJOR_VERSION 1
+
+/**
+ * Fovis minor version number.
+ */
+#define FOVIS_MINOR_VERSION 0
+
+/**
+ * Fovis micro version number.
+ */
+#define FOVIS_MICRO_VERISON 0
+
 #endif

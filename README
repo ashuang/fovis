@@ -1,25 +1,13 @@
-This is the code base for fovis. 
+This is the code base for fovis.
 
 Overview
 ========
 
-fovis is a collection of several pieces of software (pods), built according to
-the Pods software guidelines:  http://sourceforge.net/p/pods
+  The toplevel directory contains the following:
 
-The current list of pods in fovis is:
-
-  TODO
-
-Requirements
-============
-
-  TODO
-
-Documentation
-=============
-
-  TODO
-
+    fovis-analysis/
+    fovis-bot2/
+    libfovis/
 
 License
 =======
