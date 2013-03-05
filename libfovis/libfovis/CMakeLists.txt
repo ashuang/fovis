@@ -16,6 +16,7 @@ add_library(fovis SHARED
     pyramid_level.cpp
     feature_matcher.cpp
     refine_feature_match.cpp
+    stereo_calibration.cpp
     stereo_depth.cpp
     stereo_frame.cpp
     depth_image.cpp
@@ -52,6 +53,7 @@ pods_install_headers(fovis.hpp
     feature_match.hpp
     feature_matcher.hpp
     refine_feature_match.hpp
+    stereo_calibration.hpp
     stereo_depth.hpp
     stereo_frame.hpp
     depth_image.hpp

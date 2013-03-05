@@ -3,7 +3,8 @@
 
 #include <inttypes.h>
 
-#include "camera_intrinsics.hpp"
+#include "stereo_calibration.hpp"
+// #include "camera_intrinsics.hpp"
 #include "depth_source.hpp"
 #include "frame.hpp"
 #include "stereo_frame.hpp"
@@ -12,7 +13,7 @@
 #include "motion_estimation.hpp"
 
 // required for StereoCalibration
-#include "stereo_depth.hpp"
+
 
 namespace fovis
 {
