@@ -76,7 +76,7 @@ StereoDisparity::setDisparityData(const float* disparity_data)
 bool
 StereoDisparity::haveXyz(int u, int v)
 {
-  float disp = _disparity_data[ (int) v*_width + (int) u] ;
+  float disp = _disparity_data[(int) v*_width + (int) u] ;
 
   // disp ==0 mean no disparity for that return
   // TODO: should this be done more in advance?
@@ -89,9 +89,9 @@ StereoDisparity::haveXyz(int u, int v)
 Eigen::Vector3d
 StereoDisparity::getXyzValues(int u, int v, float disparity)
 {
-  Eigen::Vector4d uvd1( (double) u, (double) v, disparity, 1);
+  Eigen::Vector4d uvd1((double) u, (double) v, disparity, 1);
   Eigen::Vector4d xyzw = (*_uvd1_to_xyz) * uvd1;
-  return (xyzw.head<3>() / xyzw.w());
+  return xyzw.head<3>() / xyzw.w();
 }
 
 
@@ -110,7 +110,7 @@ StereoDisparity::getXyz(OdometryFrame * odom_frame)
       int u = (int)(kpdata->rect_base_uv(0)+0.5);
       int v = (int)(kpdata->rect_base_uv(1)+0.5);
 
-      kpdata->disparity = _disparity_data[ (int) v*_width + (int) u];
+      kpdata->disparity = _disparity_data[(int) v*_width + (int) u];
       if (kpdata->disparity == 0){ // disp ==0 if no disparity available given
         kpdata->disparity = NAN;
         kpdata->has_depth = false;
@@ -118,7 +118,7 @@ StereoDisparity::getXyz(OdometryFrame * odom_frame)
         kpdata->xyz = Eigen::Vector3d(NAN, NAN, NAN);
       } else {
         kpdata->has_depth = true;
-        kpdata->xyz = getXyzValues( u, v, kpdata->disparity );
+        kpdata->xyz = getXyzValues(u, v, kpdata->disparity);
         kpdata->xyzw.head<3>() = kpdata->xyz;
         kpdata->xyzw.w() = 1;
       }
@@ -204,7 +204,7 @@ StereoDisparity::getXyzInterp(KeypointData* kpdata)
     float wmax = -1;
     for(int i=0; i<4; i++) {
       if(isnan(disparities[i]) && w[i] > wmax) {
-        kpdata->xyz = getXyzValues( u_vals[i]  , v_vals[i] , disparities[i] );
+        kpdata->xyz = getXyzValues(u_vals[i]  , v_vals[i] , disparities[i]);
         wmax = w[i];
       }
     }
@@ -213,7 +213,7 @@ StereoDisparity::getXyzInterp(KeypointData* kpdata)
     // TODO: this simply averages the xyz pixel locations.
     // Should this be done in a manner e.g. averaging the disparity or with reprojective covariance?
     for(int i=0; i<4; i++){
-      Eigen::Vector3d xyz = getXyzValues( u_vals[i]  , v_vals[i] , disparities[i] );
+      Eigen::Vector3d xyz = getXyzValues(u_vals[i]  , v_vals[i] , disparities[i]);
       xyz_combined= xyz_combined + xyz * w[i];
     }
     kpdata->xyz = xyz_combined;

@@ -46,22 +46,22 @@ class StereoDisparity : public DepthSource
   private:
     typedef std::vector<std::pair<double, double> > Points2d;
 
-    /** 
+    /**
      * \ingroup DepthSources
      * \brief Interpolate feature position of a non-unit uvd using the 4 neighbouring pixels
-     * 
+     *
      * Mirrors the interpolation method in depth_image.cpp
      */
-    bool getXyzInterp(KeypointData* kpdata);    
-    
+    bool getXyzInterp(KeypointData* kpdata);
+
     /**
      * \ingroup DepthSources
      * \brief Given a uvd, determine the xyz reprojection position
-     * 
+     *
      * Equivalent to cv::reprojectImageTo3D()
      */
     Eigen::Vector3d getXyzValues(int u, int v, float disparity);
-    
+
     const StereoCalibration* _calib;
 
     int _width;
@@ -88,9 +88,9 @@ class StereoDisparity : public DepthSource
     std::vector<std::vector<int> > _legal_matches;
 
     Eigen::Matrix4d *_uvd1_to_xyz;
-    
+
     float* _disparity_data;
-    
+
     int _max_disparity;
 
     const VisualOdometryOptions _options;
