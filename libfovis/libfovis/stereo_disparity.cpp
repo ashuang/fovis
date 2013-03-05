@@ -1,6 +1,5 @@
 // ISSUES:
-// - Should use StereoCalibration from stereo_depth.cpp instead of reimplementing it,
-//   probably want to extract it into its own cpp
+// - StereoCalibration from stereo_depth.cpp should probably be included in its own cpp
 // - disparity values with no depth return 0. Should this be set to NAN in advance? in the driver?
 // - Is my interpolation actually correct? I haven't tested the math/values
 // - Remove unnecessary and unused parameters in header file.
@@ -28,57 +27,7 @@
 namespace fovis
 {
 
-
-///////////////// DUPLICATES CALIBRATION IN STEREO_DEPTH.CPP /////////////////////////////////
-StereoDispCalibration::StereoDispCalibration(const StereoDispCalibrationParameters& params) :
-    _parameters(params)
-{
-  initialize();
-}
-
-StereoDispCalibration::~StereoDispCalibration()
-{
-  delete _left_rectification;
-  delete _right_rectification;
-}
-
-void
-StereoDispCalibration::initialize()
-{
-  Eigen::Quaterniond rotation_quat(_parameters.right_to_left_rotation[0],
-                                   _parameters.right_to_left_rotation[1],
-                                   _parameters.right_to_left_rotation[2],
-                                   _parameters.right_to_left_rotation[3]);
-  Eigen::Vector3d translation(_parameters.right_to_left_translation[0],
-                              _parameters.right_to_left_translation[1],
-                              _parameters.right_to_left_translation[2]);
-
-  Eigen::Matrix3d left_rotation, right_rotation;
-  stereo_rectify(_parameters.left_parameters, _parameters.right_parameters,
-                 rotation_quat,
-                 translation,
-                 &left_rotation, &right_rotation, &_rectified_parameters);
-
-  _left_rectification = new Rectification(_parameters.left_parameters,
-                                          left_rotation,
-                                          _rectified_parameters);
-
-  _right_rectification = new Rectification(_parameters.right_parameters,
-                                           right_rotation,
-                                           _rectified_parameters);
-}
-
-StereoDispCalibration* StereoDispCalibration::makeCopy() const {
-  StereoDispCalibration* sc = new StereoDispCalibration();
-  sc->_parameters = _parameters;
-  sc->_rectified_parameters = _rectified_parameters;
-  sc->_left_rectification = _left_rectification->makeCopy();
-  sc->_right_rectification = _right_rectification->makeCopy();
-  return sc;
-}
-//////////////////////////////////////////////////////////////////////////////////////
-
-StereoDisparity::StereoDisparity(const StereoDispCalibration* calib,
+StereoDisparity::StereoDisparity(const StereoCalibration* calib,
                          const VisualOdometryOptions& options) :
     _calib(calib),
     _width(calib->getWidth()),
@@ -104,8 +53,6 @@ StereoDisparity::StereoDisparity(const StereoDispCalibration* calib,
 
   _disparity_data = new float[ _width* _height];
 
-  _right_frame = new StereoFrame(_width, _height, calib->getRightRectification(), _options);
-
   _uvd1_to_xyz = new Eigen::Matrix4d(calib->getUvdToXyz());
 
   _matches_capacity = 200;
@@ -115,7 +62,6 @@ StereoDisparity::StereoDisparity(const StereoDispCalibration* calib,
 
 StereoDisparity::~StereoDisparity()
 {
-  delete _right_frame;
   delete[] _matches;
 }
 
@@ -203,7 +149,7 @@ bool
 StereoDisparity::getXyzInterp(KeypointData* kpdata)
 {
   // 1. find the fractional pixel left, right and right&down from nearest unit pixel:
-  // mfallon: this seems to support non-640x480 kinect data but I'm not sure its necessary for my data
+  // mfallon: this seems to support non-640x480 kinect data but I'm not sure its necessary for disparity data
   double _x_scale =1;
   double _y_scale =1;
   float u_f = kpdata->rect_base_uv(0);
@@ -264,8 +210,8 @@ StereoDisparity::getXyzInterp(KeypointData* kpdata)
     }
   } else {
     Eigen::Vector3d xyz_combined = Eigen::Vector3d (0.,0.,0.);
-    // TODO: mfallon: this simply averages the xyz pixel locations.
-    // Should this be done in a better manner?
+    // TODO: this simply averages the xyz pixel locations.
+    // Should this be done in a manner e.g. averaging the disparity or with reprojective covariance?
     for(int i=0; i<4; i++){
       Eigen::Vector3d xyz = getXyzValues( u_vals[i]  , v_vals[i] , disparities[i] );
       xyz_combined= xyz_combined + xyz * w[i];
