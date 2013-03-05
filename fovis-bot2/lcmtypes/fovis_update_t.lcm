@@ -22,8 +22,9 @@ struct update_t {
 
     int8_t estimate_status;
 
-    const int8_t ESTIMATE_VALID = 0;
-    const int8_t ESTIMATE_INSUFFICIENT_FEATURES = 1;
-    const int8_t ESTIMATE_DEGENERATE = 2;
-    const int8_t ESTIMATE_REPROJECTION_ERROR = 3;
+    const int8_t NO_DATA = 0;
+    const int8_t ESTIMATE_VALID = 1;
+    const int8_t ESTIMATE_INSUFFICIENT_FEATURES = 2;
+    const int8_t ESTIMATE_DEGENERATE = 3;
+    const int8_t ESTIMATE_REPROJECTION_ERROR = 4;
 }
