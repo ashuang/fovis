@@ -19,6 +19,7 @@ add_library(fovis SHARED
     stereo_depth.cpp
     stereo_frame.cpp
     depth_image.cpp
+    stereo_disparity.cpp
     rectification.cpp
     stereo_rectify.cpp
     internal_utils.cpp
@@ -54,6 +55,7 @@ pods_install_headers(fovis.hpp
     stereo_depth.hpp
     stereo_frame.hpp
     depth_image.hpp
+    stereo_disparity.hpp
     rectification.hpp
     stereo_rectify.hpp
     options.hpp
