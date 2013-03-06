@@ -16,7 +16,7 @@ namespace fovis
 
 /**
  * \ingroup DepthSources
- * \brief Stores image data for a stereo camera pair.
+ * \brief Depth source for a calibrated stereo camera pair where a dense disparity map has been precomputed.
  *
  * Supports VO where input is left and disparity. No right
  * image required. Disparity values are floats with no
@@ -31,17 +31,22 @@ class StereoDisparity : public DepthSource
 
     ~StereoDisparity();
 
-    void setDisparityData(const float * disparity_data);
+    /**
+     * Sets the disparity map.  An internal copy of the disparity data is made,
+     * so the memory at \param disparity_data is not used after this method
+     * returns.
+     */
+    void setDisparityData(const float* disparity_data);
 
-    virtual bool haveXyz(int u, int v);
+    bool haveXyz(int u, int v);
 
-    virtual void getXyz(OdometryFrame * frame);
+    void getXyz(OdometryFrame* frame);
 
-    virtual void refineXyz(FeatureMatch * matches,
-                           int num_matches,
-                           OdometryFrame * frame);
+    void refineXyz(FeatureMatch* matches,
+        int num_matches,
+        OdometryFrame* frame);
 
-    virtual double getBaseline() const { return _calib->getBaseline(); }
+    double getBaseline() const { return _calib->getBaseline(); }
 
   private:
     typedef std::vector<std::pair<double, double> > Points2d;
