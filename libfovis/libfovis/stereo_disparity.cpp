@@ -1,8 +1,5 @@
 // ISSUES:
-// - StereoCalibration from stereo_depth.cpp should probably be included in its own cpp
-// - disparity values with no depth return 0. Should this be set to NAN in advance? in the driver?
 // - Is my interpolation actually correct? I haven't tested the math/values
-// - Remove unnecessary and unused parameters in header file.
 
 #include "stereo_disparity.hpp"
 
@@ -12,57 +9,23 @@
 #include <emmintrin.h>
 
 #include "visual_odometry.hpp"
-#include "tictoc.hpp"
-#include "fast.hpp"
-#include "sad.hpp"
-#include "rectification.hpp"
-#include "feature_match.hpp"
-#include "refine_feature_match.hpp"
-#include "refine_motion_estimate.hpp"
-#include "internal_utils.hpp"
-#include "stereo_rectify.hpp"
 
 #define MIN_DISPARITY 0
 
 namespace fovis
 {
 
-StereoDisparity::StereoDisparity(const StereoCalibration* calib,
-                         const VisualOdometryOptions& options) :
+StereoDisparity::StereoDisparity(const StereoCalibration* calib) :
     _calib(calib),
     _width(calib->getWidth()),
-    _height(calib->getHeight()),
-    _fast_threshold_min(5),
-    _fast_threshold_max(70),
-    _options(options)
+    _height(calib->getHeight())
 {
-  const VisualOdometryOptions& defaults(VisualOdometry::getDefaultOptions());
-
-  _feature_window_size = optionsGetIntOrFromDefault(_options, "feature-window-size", defaults);
-  _num_pyramid_levels = optionsGetIntOrFromDefault(_options, "max-pyramid-level", defaults);
-  _fast_threshold = optionsGetIntOrFromDefault(_options, "fast-threshold", defaults);
-  _use_adaptive_threshold = optionsGetBoolOrFromDefault(_options, "use-adaptive-threshold", defaults);
-  _max_refinement_displacement = optionsGetDoubleOrFromDefault(_options, "stereo-max-refinement-displacement", defaults);
-  _require_mutual_match = optionsGetBoolOrFromDefault(_options, "stereo-require-mutual-match", defaults);
-  _max_disparity = optionsGetIntOrFromDefault(_options, "stereo-max-disparity", defaults);
-  _max_dist_epipolar_line = optionsGetDoubleOrFromDefault(_options, "stereo-max-dist-epipolar-line", defaults);
-  _target_pixels_per_feature = optionsGetIntOrFromDefault(_options, "target-pixels-per-feature", defaults);
-  _fast_threshold_adaptive_gain = optionsGetDoubleOrFromDefault(_options, "fast-threshold-adaptive-gain", defaults);
-
-  _matched_right_keypoints_per_level.resize(_num_pyramid_levels);
-
   _disparity_data = new float[ _width* _height];
-
   _uvd1_to_xyz = new Eigen::Matrix4d(calib->getUvdToXyz());
-
-  _matches_capacity = 200;
-  _matches = new FeatureMatch[_matches_capacity];
-  _num_matches = 0;
 }
 
 StereoDisparity::~StereoDisparity()
 {
-  delete[] _matches;
 }
 
 void
@@ -80,7 +43,7 @@ StereoDisparity::haveXyz(int u, int v)
 
   // disp ==0 mean no disparity for that return
   // TODO: should this be done more in advance?
-  if (disp == 0){
+  if (disp == MIN_DISPARITY){
     return false;
   }
   return true;
@@ -111,7 +74,7 @@ StereoDisparity::getXyz(OdometryFrame * odom_frame)
       int v = (int)(kpdata->rect_base_uv(1)+0.5);
 
       kpdata->disparity = _disparity_data[ (int) v*_width + (int) u];
-      if (kpdata->disparity == 0){ // disp ==0 if no disparity available given
+      if (kpdata->disparity == MIN_DISPARITY){ // disp ==0 if no disparity available given
         kpdata->disparity = NAN;
         kpdata->has_depth = false;
         kpdata->xyzw = Eigen::Vector4d(NAN, NAN, NAN, NAN);
@@ -144,7 +107,6 @@ StereoDisparity::refineXyz(FeatureMatch * matches,
   }
 }
 
-// This mirrors the interpolation in depth_image.cpp
 bool
 StereoDisparity::getXyzInterp(KeypointData* kpdata)
 {
@@ -180,7 +142,7 @@ StereoDisparity::getXyzInterp(KeypointData* kpdata)
     _disparity_data[index + _width  + 1]
   };
   for(int i = 0; i<4; i++){
-    if( (disparities[i]==0) ){ // set to a known value - TODO: find a better way to do this or assume this in advance
+    if( (disparities[i]==MIN_DISPARITY) ){ // set to a known value - TODO: find a better way to do this or assume this in advance
       disparities[i] = NAN;
     }
   }
