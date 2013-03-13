@@ -57,6 +57,7 @@ StereoDepth::StereoDepth(const StereoCalibration* calib,
 
 StereoDepth::~StereoDepth()
 {
+  delete _uvd1_to_xyz;
   delete _right_frame;
   delete[] _matches;
 }

@@ -1,14 +1,7 @@
 // ISSUES:
 // - Is my interpolation actually correct? I haven't tested the math/values
-
 #include "stereo_disparity.hpp"
-
-#include <cstdio>
-#include <iostream>
-
-#include <emmintrin.h>
-
-#include "visual_odometry.hpp"
+#include "feature_match.hpp"
 
 #define MIN_DISPARITY 0
 
@@ -26,6 +19,8 @@ StereoDisparity::StereoDisparity(const StereoCalibration* calib) :
 
 StereoDisparity::~StereoDisparity()
 {
+  delete[] _disparity_data;
+  delete _uvd1_to_xyz;
 }
 
 void
