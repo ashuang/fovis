@@ -38,7 +38,9 @@ pods_install_pkg_config_file(libfovis
     REQUIRES eigen3
     VERSION 0.0.1)
 
+if(PKG_CONFIG_FOUND)
 pods_use_pkg_config_packages(fovis eigen3)
+endif()
 
 pods_install_libraries(fovis)
 

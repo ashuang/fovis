@@ -4,12 +4,14 @@ cmake_minimum_required(VERSION 2.6.0)
 set(POD_NAME libfovis)
 include(cmake/pods.cmake)
 
-# require pkg-config to build.  We use pkg-config to search for both
-# required and optional dependencies (Eigen, LCM, libbot2, etc.)
-find_package(PkgConfig REQUIRED)
+# Try to use pkg-config to find Eigen3.  If we don't have pkg-config, then
+# just assume that Eigen3 is in the include path.
+find_package(PkgConfig)
+if(PKG_CONFIG_FOUND)
+    pkg_check_modules(EIGEN REQUIRED eigen3)
+endif()
 
-pkg_check_modules(EIGEN REQUIRED eigen3)
-
+# Do we want to use SSE?
 option(USE_SSE "Enables SSE support" ON)
 if(USE_SSE)
     set(USE_SSE_MESSAGE "Enabled")
@@ -34,3 +36,10 @@ Configuration (fovis):
  libfreenct example:    ${LIBFREENECT_EXAMPLE_MESSAGE}
 
 ")
+
+
+if(NOT PKG_CONFIG_FOUND)
+    message("Couldn't find pkg-config.  Hoping that eigen3 is in the include path...")
+    message("If you get compile errors related to Eigen, try setting CMAKE_CXX_FLAGS")
+    message("")
+endif()
