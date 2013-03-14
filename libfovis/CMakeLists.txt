@@ -10,6 +10,14 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(EIGEN REQUIRED eigen3)
 
+option(USE_SSE "Enables SSE support" ON)
+if(USE_SSE)
+    set(USE_SSE_MESSAGE "Enabled")
+    add_definitions(-DFOVIS_USE_SSE)
+else()
+    set(USE_SSE_MESSAGE "Disabled")
+endif()
+
 # build the main library
 add_subdirectory(libfovis)
 
@@ -20,8 +28,9 @@ message("
 
 Configuration (fovis):
 
-       libfovis:        Enabled
- OpenNI example:        ${OPENNI_EXAMPLE_MESSAGE}
+           libfovis:    Enabled
+        SSE Support:    ${USE_SSE_MESSAGE}
+     OpenNI example:    ${OPENNI_EXAMPLE_MESSAGE}
  libfreenct example:    ${LIBFREENECT_EXAMPLE_MESSAGE}
 
 ")
