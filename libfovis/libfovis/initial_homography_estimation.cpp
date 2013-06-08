@@ -20,10 +20,14 @@ Eigen::ArrayXf InitialHomographyEstimator::flattenMatrix(Eigen::MatrixXf &m)
   return Eigen::Map<Eigen::ArrayXf>(m.data(), m.rows() * m.cols());
 }
 
-static void 
+static void
 grayToEigen(const uint8_t * grayData, int width, int height, int stride,
     int downsampleFactor, Eigen::MatrixXf* result)
 {
+  // truncate the image before downsampling.
+  width = (width >> downsampleFactor) << downsampleFactor;
+  height = (height >> downsampleFactor) << downsampleFactor;
+
   Eigen::MatrixXf& eig_imf = *result;
   if (downsampleFactor > 0) {
     int cols = width >> downsampleFactor;
