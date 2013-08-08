@@ -34,6 +34,7 @@ Configuration (fovis):
         SSE Support:    ${USE_SSE_MESSAGE}
      OpenNI example:    ${OPENNI_EXAMPLE_MESSAGE}
  libfreenct example:    ${LIBFREENECT_EXAMPLE_MESSAGE}
+   TUM-RGBD example:    ${TUM_RGBD_MESSAGE}
 
 ")
 
