@@ -34,7 +34,7 @@ add_library(fovis SHARED
 set_target_properties(fovis PROPERTIES SOVERSION 1)
 
 pods_install_pkg_config_file(libfovis
-    LIBS -lfovis m
+    LIBS -lfovis -lm
     REQUIRES eigen3
     VERSION 0.0.1)
 

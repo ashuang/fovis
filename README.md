@@ -10,14 +10,21 @@ S. Huang, Abraham Bachrach, Peter Henry, Michael Krainin, Daniel Maturana,
   Flagstaff, Arizona, USA, Aug. 2011 PDF.
 
 # Build requirements
-Fovis is intended to be relatively portable. There are two major requirements
-for building and using the software:
+Fovis is intended to be relatively portable. The requirements for building and
+using the software are:
 
 - CMake
 - Eigen 3
-- A CPU supporting Intel SSE2.
 
-Fovis was developed and tested on Ubuntu. It may work on other platforms, but no guarantees.
+Fovis was developed and tested on Ubuntu. It may work on other platforms, but
+no guarantees.
+
+# Build instructions
+
+See libfovis/README for instructions on building libfovis.
+
+The fovis-bot2 and fovis-analysis directories are included for completeness,
+but you probably won't want to build them.
 
 # Usage requirements
 For portability reasons, the actual library itself is sensor agnostic and
