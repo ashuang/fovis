@@ -1,6 +1,0 @@
-package fovis;
-
-struct param_t {
-    // in bot_param format
-    string param;
-}

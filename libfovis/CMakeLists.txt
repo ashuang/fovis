@@ -1,46 +1,75 @@
-cmake_minimum_required(VERSION 2.6.0)
+add_definitions(-Wall)
 
-# pull in the pods macros. See cmake/pods.cmake for documentation
-set(POD_NAME libfovis)
-include(cmake/pods.cmake)
-
-# Try to use pkg-config to find Eigen3.  If we don't have pkg-config, then
-# just assume that Eigen3 is in the include path.
-find_package(PkgConfig)
-if(PKG_CONFIG_FOUND)
-    pkg_check_modules(EIGEN REQUIRED eigen3)
-endif()
-
-# Do we want to use SSE?
-option(USE_SSE "Enables SSE support" ON)
 if(USE_SSE)
-    set(USE_SSE_MESSAGE "Enabled")
-    add_definitions(-DFOVIS_USE_SSE)
-else()
-    set(USE_SSE_MESSAGE "Disabled")
+    add_definitions(-msse2 -msse3)
 endif()
 
-# build the main library
-add_subdirectory(libfovis)
+#add_definitions(-Wall -march=native -msse2 -msse3 -msse4.2 -g)
 
-add_subdirectory(testers)
-add_subdirectory(examples)
+add_library(fovis SHARED
+    frame.cpp
+    visual_odometry.cpp
+    fast.cpp
+    motion_estimation.cpp
+    gauss_pyramid.c
+    refine_motion_estimate.cpp
+    tictoc.cpp
+    primesense_depth.cpp
+    initial_homography_estimation.cpp
+    grid_filter.cpp
+    intensity_descriptor.cpp
+    pyramid_level.cpp
+    feature_matcher.cpp
+    refine_feature_match.cpp
+    stereo_calibration.cpp
+    stereo_depth.cpp
+    stereo_frame.cpp
+    depth_image.cpp
+    stereo_disparity.cpp
+    rectification.cpp
+    stereo_rectify.cpp
+    internal_utils.cpp
+    normalize_image.cpp
+    )
+set_target_properties(fovis PROPERTIES SOVERSION 1)
 
-message("
+pods_install_pkg_config_file(libfovis
+    LIBS -lfovis -lm
+    REQUIRES eigen3
+    VERSION 0.0.1)
 
-Configuration (fovis):
-
-           libfovis:    Enabled
-        SSE Support:    ${USE_SSE_MESSAGE}
-     OpenNI example:    ${OPENNI_EXAMPLE_MESSAGE}
- libfreenct example:    ${LIBFREENECT_EXAMPLE_MESSAGE}
-   TUM-RGBD example:    ${TUM_RGBD_MESSAGE}
-
-")
-
-
-if(NOT PKG_CONFIG_FOUND)
-    message("Couldn't find pkg-config.  Hoping that eigen3 is in the include path...")
-    message("If you get compile errors related to Eigen, try setting CMAKE_CXX_FLAGS")
-    message("")
+if(PKG_CONFIG_FOUND)
+pods_use_pkg_config_packages(fovis eigen3)
 endif()
+
+pods_install_libraries(fovis)
+
+pods_install_headers(fovis.hpp
+    visual_odometry.hpp
+    motion_estimation.hpp
+    frame.hpp
+    keypoint.hpp
+    depth_source.hpp
+    camera_intrinsics.hpp
+    primesense_depth.hpp
+    grid_filter.hpp
+    sad.hpp
+    internal_utils.hpp
+    intensity_descriptor.hpp
+    pyramid_level.hpp
+    feature_match.hpp
+    feature_matcher.hpp
+    refine_feature_match.hpp
+    stereo_calibration.hpp
+    stereo_depth.hpp
+    stereo_frame.hpp
+    depth_image.hpp
+    stereo_disparity.hpp
+    rectification.hpp
+    stereo_rectify.hpp
+    options.hpp
+    tictoc.hpp
+    refine_motion_estimate.hpp
+    initial_homography_estimation.hpp
+    DESTINATION fovis
+    )
