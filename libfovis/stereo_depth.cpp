@@ -3,8 +3,6 @@
 #include <cstdio>
 #include <iostream>
 
-#include <emmintrin.h>
-
 #include "visual_odometry.hpp"
 #include "tictoc.hpp"
 #include "fast.hpp"

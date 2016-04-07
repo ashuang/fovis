@@ -5,7 +5,6 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <emmintrin.h>
 
 #include "options.hpp"
 

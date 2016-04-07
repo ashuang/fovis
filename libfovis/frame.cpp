@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include <emmintrin.h>
-
 #include "visual_odometry.hpp"
 #include "frame.hpp"
 #include "fast.hpp"

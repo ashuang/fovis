@@ -3,8 +3,6 @@
 #include <cstdio>
 #include <iostream>
 
-#include <emmintrin.h>
-
 #include "stereo_rectify.hpp"
 
 namespace fovis
